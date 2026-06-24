@@ -8,7 +8,7 @@ pipeline:
     ci:
       codebase:
         connectorRef: Harness_CI_Pipeline_Config
-        repoName: Math-Warrior-Arena
+        repoName: react-pipeline-sample
         build: <+input>
   stages:
     - stage:
@@ -31,6 +31,17 @@ pipeline:
             spec: {}
           execution:
             steps:
+              - step:
+                  type: Run
+                  name: npm_commands
+                  identifier: npm_commands
+                  spec:
+                    shell: Sh
+                    command: |-
+                      npm install
+                      npm run build
+                      npm test
+                contextType: Pipeline
               - step:
                   type: BuildAndPushDockerRegistry
                   name: BuildAndPushDockerRegistry_1
