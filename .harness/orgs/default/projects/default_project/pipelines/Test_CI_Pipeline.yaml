@@ -1,0 +1,58 @@
+pipeline:
+  name: Test CI Pipeline
+  identifier: Test_CI_Pipeline
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Harness_CI_Pipeline_Config
+        repoName: Math-Warrior-Arena
+        build: <+input>
+  stages:
+    - stage:
+        name: Build
+        identifier: Build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: MacOS
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: docker_connector
+                    repo: gurpreetji/harness_test_repo
+                    tags:
+                      - harness
+              - step:
+                  type: HarnessSAST
+                  name: HarnessCode_1
+                  identifier: HarnessCode_1
+                  spec:
+                    mode: orchestration
+                    config: sast
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+        runMode:
+          type: Manual
+          timeout: 5m
