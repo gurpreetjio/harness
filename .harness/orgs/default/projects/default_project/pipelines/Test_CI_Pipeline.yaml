@@ -24,10 +24,10 @@ pipeline:
           buildIntelligence:
             enabled: true
           platform:
-            os: MacOS
+            os: Linux
             arch: Amd64
           runtime:
-            type: Docker
+            type: Cloud
             spec: {}
           execution:
             steps:
@@ -40,19 +40,6 @@ pipeline:
                     repo: gurpreetji/harness_test_repo
                     tags:
                       - harness
-              - step:
-                  type: HarnessSAST
-                  name: HarnessCode_1
-                  identifier: HarnessCode_1
-                  spec:
-                    mode: orchestration
-                    config: sast
-                    target:
-                      type: repository
-                      detection: auto
-                    advanced:
-                      log:
-                        level: info
         runMode:
           type: Manual
           timeout: 5m
